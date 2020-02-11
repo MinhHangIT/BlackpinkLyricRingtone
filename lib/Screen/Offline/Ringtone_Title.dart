@@ -5,11 +5,11 @@ import 'package:ringtone_app/common/music_icons.dart';
 import 'package:ringtone_app/model/playerstate.dart';
 import 'package:provider/provider.dart';
 
-class Song_Tile extends StatelessWidget {
+class Ringtone_Tile extends StatelessWidget {
   final Song _song;
   String _artists;
   String _duration;
-  Song_Tile({Key key, @required Song song})
+  Ringtone_Tile({Key key, @required Song song})
       : _song = song,
         super(key: key);
 

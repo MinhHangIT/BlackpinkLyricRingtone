@@ -20,8 +20,8 @@ class MusicBoardControls extends StatelessWidget {
               width: 245,
               height: 60,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Color(0xFFDCE4F4),
+                borderRadius: BorderRadius.circular(30.0),
+                color: Color(0xFFFEDCDC),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.black.withOpacity(0.15),
@@ -40,7 +40,7 @@ class MusicBoardControls extends StatelessWidget {
                           _globalBloc.musicPlayerBloc.playPreviousSong(),
                       child: Icon(
                         Icons.fast_rewind,
-                        color: Color(0xFF7B92CA),
+                        color: Color(0xFFFD9D9D),
                         size: 40,
                       ),
                     ),
@@ -51,7 +51,7 @@ class MusicBoardControls extends StatelessWidget {
                       onTap: () => _globalBloc.musicPlayerBloc.playNextSong(),
                       child: Icon(
                         Icons.fast_forward,
-                        color: Color(0xFF7B92CA),
+                        color: Color(0xFFFD9D9D),
                         size: 40,
                       ),
                     ),
@@ -83,8 +83,8 @@ class MusicBoardControls extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      width: 100,
-                      height: 100,
+                      width: 80,
+                      height: 80,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
@@ -105,12 +105,12 @@ class MusicBoardControls extends StatelessWidget {
                           firstChild: Icon(
                             Icons.pause,
                             size: 50,
-                            color: Color(0xFF7B92CA),
+                            color: Color(0xFFFD9D9D),
                           ),
                           secondChild: Icon(
                             Icons.play_arrow,
                             size: 50,
-                            color: Color(0xFF7B92CA),
+                            color: Color(0xFFFD9D9D),
                           ),
                         ),
                       ),

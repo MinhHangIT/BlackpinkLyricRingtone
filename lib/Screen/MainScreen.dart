@@ -6,15 +6,12 @@ import 'package:ringtone_app/Screen/HomeScreen.dart';
 import 'package:ringtone_app/Screen/FavoriteScreen.dart';
 import 'package:ringtone_app/Screen/Album/AbumScreen.dart';
 import 'package:ringtone_app/Screen/MusicHome/PlayBottomScreen.dart';
+import 'package:ringtone_app/Screen/Search/search_screen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ringtone_app/blocs/global.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:ringtone_app/Screen/now_playing/now_playing_screen.dart';
-
-
-
-
 
 
 class MainScreen extends StatefulWidget {
@@ -156,6 +153,12 @@ class MainScreenState extends State<MainScreen> {
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.only(top:0.0),
                                   child: GestureDetector(
+                                    onTap: ()=>  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SearchScreen(),
+                                      ),
+                                    ),
                                       child: Icon(Icons.search,color: Colors.white,size: 35,)
                                   )
                               )
@@ -191,7 +194,7 @@ class MainScreenState extends State<MainScreen> {
                           ),
                           Expanded(
                             child:  PageView(
-                              physics: BouncingScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               controller: pageController,
                               onPageChanged: onPageChanged,
                               children: <Widget>[

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:ringtone_app/blocs/global.dart';
 import 'package:ringtone_app/common/empty_screen.dart';
 import 'package:ringtone_app/model/playerstate.dart';
-import 'package:ringtone_app/Screen/Offline/Song_Title.dart';
+import 'package:ringtone_app/Screen/Offline/Ringtone_Title.dart';
 import 'package:provider/provider.dart';
 
 class AllSongsScreen extends StatelessWidget {
@@ -81,7 +81,7 @@ class AllSongsScreen extends StatelessWidget {
                           break;
                       }
                     },
-                    child: SongTile(
+                    child: Ringtone_Tile(
                       song: _songs[index],
                     ),
                   );

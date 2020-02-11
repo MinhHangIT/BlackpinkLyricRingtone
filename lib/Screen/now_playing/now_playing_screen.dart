@@ -192,10 +192,10 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
               ],
             ),
           ),
-          Divider(
-            color: Colors.transparent,
-            height: _screenHeight / 30,
-          ),
+//          Divider(
+//            color: Colors.transparent,
+//            height: _screenHeight / 30,
+//          ),
           PreferencesBoard(),
           StreamBuilder<MapEntry<PlayerState, Song>>(
               stream: _globalBloc.musicPlayerBloc.playerState$,
@@ -295,7 +295,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
               }),
           Divider(
             color: Colors.transparent,
-            height: _screenHeight / 30,
+            height: _screenHeight / 35,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -368,7 +368,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
           ),
           Divider(
             color: Colors.transparent,
-            height: _screenHeight / 22,
+            height: _screenHeight / 35,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),

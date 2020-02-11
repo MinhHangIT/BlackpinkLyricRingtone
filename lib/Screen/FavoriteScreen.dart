@@ -4,7 +4,7 @@ import 'package:ringtone_app/blocs/global.dart';
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:ringtone_app/common/empty_screen.dart';
 import 'package:ringtone_app/model/playerstate.dart';
-import 'package:ringtone_app/Screen/Offline/Song_Title.dart';
+import 'package:ringtone_app/Screen/Offline/Ringtone_Title.dart';
 
 
 class FavoriteScreen extends StatefulWidget {
@@ -94,7 +94,7 @@ class FavoriteScreenState extends State<FavoriteScreen> {
                             break;
                         }
                       },
-                      child: SongTile(
+                      child: Ringtone_Tile(
                         song: _songs[index],
                       ),
                     );

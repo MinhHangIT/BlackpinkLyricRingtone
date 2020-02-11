@@ -52,7 +52,7 @@ class PreferencesBoard extends StatelessWidget {
               icon: Icon(
                 Icons.favorite,
                 size: 35,
-                color: !_isFavorited ? Color(0xFFC7D2E3) : Color(0xFF7B92CA),
+                color: !_isFavorited ? Color(0xFFC7D2E3) : Color(0xFFFD9D9D),
               ),
             );
           },
@@ -84,7 +84,7 @@ class PreferencesBoard extends StatelessWidget {
               icon: Icon(
                 Icons.loop,
                 size: 35,
-                color: !_isSelected ? Color(0xFFC7D2E3) : Color(0xFF7B92CA),
+                color: !_isSelected ? Color(0xFFC7D2E3) : Color(0xFFFD9D9D),
               ),
             );
           },
@@ -113,7 +113,7 @@ class PreferencesBoard extends StatelessWidget {
               icon: Icon(
                 Icons.shuffle,
                 size: 35,
-                color: !_isSelected ? Color(0xFFC7D2E3) : Color(0xFF7B92CA),
+                color: !_isSelected ? Color(0xFFC7D2E3) : Color(0xFFFD9D9D),
               ),
             );
           },
