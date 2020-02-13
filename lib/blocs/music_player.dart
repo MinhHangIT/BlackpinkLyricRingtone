@@ -1,15 +1,21 @@
+import 'dart:async';
+
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/services.dart';
 import 'package:ringtone_app/model/Album.dart';
 import 'package:ringtone_app/model/playback.dart';
 import 'package:ringtone_app/model/playerstate.dart';
-
+import 'package:ringtone_app/model/SongLyric.dart';
+import 'package:ringtone_app/constant/app_constant.dart';
+import 'package:ringtone_app/utils/directory_modul.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class MusicPlayerBloc {
   BehaviorSubject<List<Song>> _songs$;
+  BehaviorSubject<List<Song>> _localSongs$;
+  BehaviorSubject<List<SongLyric>> _songLyric$;
   BehaviorSubject<List<Album>> _albums$;
   BehaviorSubject<MapEntry<PlayerState, Song>> _playerState$;
   BehaviorSubject<MapEntry<List<Song>, List<Song>>>
@@ -20,13 +26,23 @@ class MusicPlayerBloc {
   BehaviorSubject<bool> _isAudioSeeking$;
   MusicFinder _audioPlayer;
   Song _defaultSong;
+  Map<String, SongLyric> hashMySong;
 
   BehaviorSubject<List<Song>> get songs$ => _songs$;
+
+  BehaviorSubject<List<Song>> get localSongs$ => _localSongs$;
+
+  BehaviorSubject<List<SongLyric>> get songLyric$ => _songLyric$;
+
   BehaviorSubject<List<Album>> get albums$ => _albums$;
+
   BehaviorSubject<MapEntry<PlayerState, Song>> get playerState$ =>
       _playerState$;
+
   BehaviorSubject<Duration> get position$ => _position$;
+
   BehaviorSubject<List<Playback>> get playback$ => _playback$;
+
   BehaviorSubject<List<Song>> get favorites$ => _favorites$;
 
   MusicPlayerBloc() {
@@ -37,14 +53,58 @@ class MusicPlayerBloc {
   }
 
   Future<void> fetchSongs() async {
-    String jsonString =
-        await rootBundle.loadString('lib/data/ringtone.json');
+    String jsonString = await rootBundle.loadString('lib/data/song.json');
+    List<Song> mySongs = new List<Song>();
+    final jsonResponse = json.decode(jsonString);
+    hashMySong = new Map<String, SongLyric>();
+    List<Song> songs = new List<Song>();
+    jsonResponse.forEach((o) {
+      SongLyric mySong = SongLyric.fromJson(o);
+      Song song = Song.fromMap(o);
+      //song.isLocal = false;
+      songs.add(song);
+      hashMySong[mySong.key] = mySong;
+    });
+    _songs$.add(songs);
+  }
+
+  Future<void> fetchRingtones() async {
+    String jsonString = await rootBundle.loadString('lib/data/ringtone.json');
     final jsonResponse = json.decode(jsonString);
     List<Song> mySongs = new List<Song>();
     jsonResponse.forEach((o) {
       mySongs.add(Song.fromMap(o));
     });
     _songs$.add(mySongs);
+  }
+
+  Future<void> fetchLocalSongs() async {
+    print("--------------------------------------");
+    await MusicFinder.allSongs().then(
+      (data) {
+        data = jsonDecode(data);
+        print("--------------------------------------");
+        print(data.length);
+        List<Song> songs = new List<Song>();
+        data.forEach((song) {
+          if (song.uri.contains(FOLDER_NAME)) {
+            song.isLocal = true;
+            song.key = getKeyFromUri(song.uri);
+            // print(jsonEncode(song.toJson()));
+            songs.add(song);
+          }
+        });
+        _localSongs$.add(songs);
+      },
+    );
+  }
+
+  Future<void> removeFromLocal(Song song) async {
+    await DirectoryModule.deleteFile(song.uri).then((_) async {
+      Timer(Duration(seconds: 1), () async {
+        await fetchLocalSongs();
+      });
+    });
   }
 
   void playMusic(Song song) {
@@ -228,8 +288,7 @@ class MusicPlayerBloc {
   }
 
   void _initDeafultSong() {
-    _defaultSong =
-        Song(null, " ", " ", " ", null, null, null, null);
+    _defaultSong = Song(null, " ", " ", " ", null, null, null, null);
   }
 
   void _initObservers() {
@@ -244,6 +303,8 @@ class MusicPlayerBloc {
     _isAudioSeeking$ = BehaviorSubject<bool>.seeded(false);
     _songs$ = BehaviorSubject<List<Song>>();
     _albums$ = BehaviorSubject<List<Album>>();
+    _localSongs$ = BehaviorSubject<List<Song>>();
+
     _position$ = BehaviorSubject<Duration>();
     _playlist$ = BehaviorSubject<MapEntry<List<Song>, List<Song>>>();
     _playback$ = BehaviorSubject<List<Playback>>.seeded([]);
@@ -278,10 +339,15 @@ class MusicPlayerBloc {
     _isAudioSeeking$.close();
     _songs$.close();
     _albums$.close();
+    _localSongs$.close();
     _playerState$.close();
     _playlist$.close();
     _position$.close();
     _playback$.close();
     _favorites$.close();
   }
+}
+
+String getKeyFromUri(String uri) {
+  return uri.split('/').last.split('_')[0];
 }

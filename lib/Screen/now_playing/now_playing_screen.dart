@@ -16,8 +16,10 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class NowPlayingScreen extends StatefulWidget {
+  
   final PanelController controller;
   NowPlayingScreen({this.controller});
+
 
   _NowPlayingScreenState createState() => _NowPlayingScreenState();
 }
@@ -25,6 +27,8 @@ class NowPlayingScreen extends StatefulWidget {
 class _NowPlayingScreenState extends State<NowPlayingScreen> {
   String textDownload;
   bool isDownloading = false;
+  bool checkRingtone = true;
+
 //  InterstitialAd _interstitialAd;
 
   @override
@@ -167,7 +171,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
             child: Stack(
               children: <Widget>[
                 StreamBuilder<MapEntry<PlayerState, Song>>(
-                  stream: _globalBloc.musicPlayerBloc.playerState$,
+                  stream: _globalBloc.musicPlayerBloc.playerState$ ,
                   builder: (BuildContext context, AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                     if (!snapshot.hasData || snapshot.data.value.albumArt == null) {
                       return EmptyAlbumArtContainer(
@@ -187,7 +191,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: MusicBoardControls(),
+                  child: MusicBoardControls(isRingtone: checkRingtone),
                 ),
               ],
             ),
@@ -198,7 +202,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
 //          ),
           PreferencesBoard(),
           StreamBuilder<MapEntry<PlayerState, Song>>(
-              stream: _globalBloc.musicPlayerBloc.playerState$,
+              stream:  _globalBloc.musicPlayerBloc.playerState$ ,
               builder: (BuildContext context, AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                 return Container(
                   height: 50,
@@ -379,7 +383,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: StreamBuilder<MapEntry<PlayerState, Song>>(
-                        stream: _globalBloc.musicPlayerBloc.playerState$,
+                        stream:  _globalBloc.musicPlayerBloc.playerState$ ,
                         builder: (BuildContext context, AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                           if (!snapshot.hasData) {
                             return Text(

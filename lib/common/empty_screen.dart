@@ -15,7 +15,7 @@ class EmptyScreen extends StatelessWidget {
         children: <Widget>[
           Icon(
             Icons.sentiment_dissatisfied,
-            size: 100,
+            size: 80,
             color: Color(0xFFC4C4C4),
           ),
           Divider(

@@ -19,7 +19,7 @@ class Song_Tile extends StatelessWidget {
     parseArtists();
     parseDuration();
     return StreamBuilder<MapEntry<PlayerState, Song>>(
-        stream: _globalBloc.musicPlayerBloc.playerState$,
+        stream: _globalBloc.musicPlayerSongBloc.playerState$,
         builder: (BuildContext context, AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
           if (!snapshot.hasData) {
             return Container();
@@ -148,7 +148,7 @@ class Song_Tile extends StatelessWidget {
                           Flexible(
                             flex: 18,
                             child: StreamBuilder<Duration>(
-                              stream: _globalBloc.musicPlayerBloc.position$,
+                              stream: _globalBloc.musicPlayerSongBloc.position$,
                               builder: (BuildContext context, AsyncSnapshot<Duration> snapshot) {
                                 if (!snapshot.hasData) {
                                   return Slider(
@@ -165,16 +165,16 @@ class Song_Tile extends StatelessWidget {
                                   min: 0,
                                   max: _songDurationInMilliseconds.toDouble(),
                                   value: _songDurationInMilliseconds > _millseconds ? _millseconds.toDouble() : _songDurationInMilliseconds.toDouble(),
-                                  onChangeStart: (double value) => _globalBloc.musicPlayerBloc.invertSeekingState(),
+                                  onChangeStart: (double value) => _globalBloc.musicPlayerSongBloc.invertSeekingState(),
                                   onChanged: (double value) {
                                     final Duration _duration = Duration(
                                       milliseconds: value.toInt(),
                                     );
-                                    _globalBloc.musicPlayerBloc.updatePosition(_duration);
+                                    _globalBloc.musicPlayerSongBloc.updatePosition(_duration);
                                   },
                                   onChangeEnd: (double value) {
-                                    _globalBloc.musicPlayerBloc.invertSeekingState();
-                                    _globalBloc.musicPlayerBloc.audioSeek(value / 1000);
+                                    _globalBloc.musicPlayerSongBloc.invertSeekingState();
+                                    _globalBloc.musicPlayerSongBloc.audioSeek(value / 1000);
                                   },
                                   activeColor: Colors.blue,
                                   inactiveColor: Color(0xFFCEE3EE),

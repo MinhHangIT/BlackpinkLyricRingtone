@@ -4,8 +4,17 @@ import 'package:flutter/painting.dart';
 import 'package:ringtone_app/blocs/global.dart';
 import 'package:ringtone_app/model/playerstate.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class MusicBoardControls extends StatelessWidget {
+class MusicBoardControls extends StatefulWidget {
+  bool isRingtone;
+  MusicBoardControls({this.isRingtone});
+
+
+  MusicBoardControlsState createState() => MusicBoardControlsState();
+}
+
+class MusicBoardControlsState extends State<MusicBoardControls> {
   @override
   Widget build(BuildContext context) {
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
@@ -37,7 +46,8 @@ class MusicBoardControls extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 16.0),
                     child: GestureDetector(
                       onTap: () =>
-                          _globalBloc.musicPlayerBloc.playPreviousSong(),
+                      widget.isRingtone ?
+                          _globalBloc.musicPlayerBloc.playPreviousSong() : _globalBloc.musicPlayerSongBloc.playPreviousSong(),
                       child: Icon(
                         Icons.fast_rewind,
                         color: Color(0xFFFD9D9D),
@@ -48,7 +58,7 @@ class MusicBoardControls extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
                     child: GestureDetector(
-                      onTap: () => _globalBloc.musicPlayerBloc.playNextSong(),
+                      onTap: () => widget.isRingtone ? _globalBloc.musicPlayerBloc.playNextSong() : _globalBloc.musicPlayerSongBloc.playNextSong(),
                       child: Icon(
                         Icons.fast_forward,
                         color: Color(0xFFFD9D9D),
@@ -63,7 +73,7 @@ class MusicBoardControls extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: StreamBuilder<MapEntry<PlayerState, Song>>(
-                stream: _globalBloc.musicPlayerBloc.playerState$,
+                stream: widget.isRingtone ? _globalBloc.musicPlayerBloc.playerState$ : _globalBloc.musicPlayerSongBloc.playerState$,
                 builder: (BuildContext context,
                     AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                   if (!snapshot.hasData) {
@@ -77,9 +87,13 @@ class MusicBoardControls extends StatelessWidget {
                         return;
                       }
                       if (PlayerState.paused == _state) {
-                        _globalBloc.musicPlayerBloc.playMusic(_currentSong);
+                        widget.isRingtone ?
+                        _globalBloc.musicPlayerBloc.playMusic(_currentSong) :
+                        _globalBloc.musicPlayerSongBloc.playMusic(_currentSong);
                       } else {
-                        _globalBloc.musicPlayerBloc.pauseMusic(_currentSong);
+                        widget.isRingtone ?
+                        _globalBloc.musicPlayerBloc.pauseMusic(_currentSong) :
+                        _globalBloc.musicPlayerSongBloc.pauseMusic(_currentSong);
                       }
                     },
                     child: Container(

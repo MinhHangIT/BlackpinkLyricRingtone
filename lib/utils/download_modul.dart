@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:ringtone_app/utils/directory_modul.dart';
 
 class DownloadModule {
   static String appPath = "Matinee Ringtones";
@@ -24,6 +25,29 @@ class DownloadModule {
     }
   }
 
+  static CancelToken token = new CancelToken();
+
+  static Future<String> downloadFile(
+      String uri, String name, Function onProgress) async {
+    Dio dio = Dio();
+    token = new CancelToken();
+
+    try {
+      String dirPath = await createAppFolder();
+
+      if (dirPath != null) {
+        dirPath = "${dirPath}/${name}.${getExt(uri)}";
+        await dio.download(uri, dirPath,
+            onReceiveProgress: onProgress, cancelToken: token);
+        return dirPath;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
   static Future<String> createAppFolder() async {
     try {
       var dir = await getExternalStorageDirectory();
@@ -39,6 +63,9 @@ class DownloadModule {
       print(e);
       return null;
     }
+  }
+  static void cancelDownload() {
+    token.cancel("cancelled");
   }
 
   static String getExt(String path) {

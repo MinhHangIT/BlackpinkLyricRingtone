@@ -11,7 +11,7 @@ class SpecificAlbumScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Album _album = Provider.of<Album>(context);
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
-    final double _screenHeight = MediaQuery.of(context).size.height;
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 

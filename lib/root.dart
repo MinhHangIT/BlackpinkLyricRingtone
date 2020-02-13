@@ -25,10 +25,19 @@ class _BlackPinkAppState extends State<BlackPinkApp> {
         _globalBloc.permissionsBloc.storagePermissionStatus$.listen(
               (data) {
             if (data == PermissionStatus.granted) {
-              _globalBloc.musicPlayerBloc.fetchSongs().then(
+              _globalBloc.musicPlayerBloc.fetchLocalSongs().then(
                     (_) {
-                  _globalBloc.musicPlayerBloc.retrieveFavorites();
-                },
+                      // get data song
+                      _globalBloc.musicPlayerSongBloc.fetchSongs().then(
+                              (_){
+                            _globalBloc.musicPlayerSongBloc.retrieveFavorites();
+                          });
+                      // get data ringtone
+                      _globalBloc.musicPlayerBloc.fetchRingtones().then(
+                              (_) {
+                            _globalBloc.musicPlayerBloc.retrieveFavorites();
+                          });
+                    }
               );
             }
           },

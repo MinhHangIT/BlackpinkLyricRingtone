@@ -76,18 +76,18 @@ class MainScreenState extends State<MainScreen> {
       child: Scaffold(
           body: SlidingUpPanel(
             panel: ClipRRect(
-            borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(_radius),
-            topRight: Radius.circular(_radius),
+                borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(_radius),
+                topRight: Radius.circular(_radius),
+                ),
+              child: NowPlayingScreen(controller: panelController),
             ),
-          child: NowPlayingScreen(controller: panelController),
-          ),
             controller: panelController,
             minHeight: 110,
             maxHeight: MediaQuery.of(context).size.height,
             borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(_radius),
-            topRight: Radius.circular(_radius),
+              topLeft: Radius.circular(_radius),
+              topRight: Radius.circular(_radius),
             ),
             collapsed: Container(
               width: double.infinity,
@@ -104,7 +104,7 @@ class MainScreenState extends State<MainScreen> {
                 colors: [Color(0xFFFD9D9D), Color(0xFF8A8A8A),],
                 ),
               ),
-            child: PlayBottomScreen(controller: panelController),
+              child: PlayBottomScreen(controller: panelController),
             ),
             body: Scaffold(
               body: Container(
