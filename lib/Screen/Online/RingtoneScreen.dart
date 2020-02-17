@@ -108,7 +108,7 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
                         padding: const EdgeInsets.only(bottom: 16.0, top: 60.0),
 
                         child:  StreamBuilder<List<Song>>(
-                          stream: _globalBloc.musicPlayerBloc.songs$,
+                          stream: _globalBloc.musicPlayerBloc.ringtone$,
                           builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
                             if (!snapshot.hasData) {
                               return Center(

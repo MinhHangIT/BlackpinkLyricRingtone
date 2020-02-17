@@ -14,6 +14,7 @@ import 'dart:convert';
 
 class MusicPlayerBloc {
   BehaviorSubject<List<Song>> _songs$;
+  BehaviorSubject<List<Song>> _ringtone$;
   BehaviorSubject<List<Song>> _localSongs$;
   BehaviorSubject<List<SongLyric>> _songLyric$;
   BehaviorSubject<List<Album>> _albums$;
@@ -29,6 +30,7 @@ class MusicPlayerBloc {
   Map<String, SongLyric> hashMySong;
 
   BehaviorSubject<List<Song>> get songs$ => _songs$;
+  BehaviorSubject<List<Song>> get ringtone$ => _ringtone$;
 
   BehaviorSubject<List<Song>> get localSongs$ => _localSongs$;
 
@@ -66,17 +68,19 @@ class MusicPlayerBloc {
       hashMySong[mySong.key] = mySong;
     });
     _songs$.add(songs);
-    print(_songs$.length);
   }
 
   Future<void> fetchRingtones() async {
     String jsonString = await rootBundle.loadString('lib/data/ringtone.json');
+//    print(jsonString);
     final jsonResponse = json.decode(jsonString);
     List<Song> mySongs = new List<Song>();
     jsonResponse.forEach((o) {
+
       mySongs.add(Song.fromMap(o));
-    });
-    _songs$.add(mySongs);
+  });
+
+    _ringtone$.add(mySongs);
   }
 
   Future<void> fetchLocalSongs() async {
@@ -299,12 +303,18 @@ class MusicPlayerBloc {
       (List<Song> songs) {
         _updateAlbums(songs);
       },
+    );
+    _ringtone$.listen(
+          (List<Song> songs) {
+        _updateAlbums(songs);
+      },
     ); // push albums from songs
   }
 
   void _initStreams() {
     _isAudioSeeking$ = BehaviorSubject<bool>.seeded(false);
     _songs$ = BehaviorSubject<List<Song>>();
+    _ringtone$ = BehaviorSubject<List<Song>>();
     _albums$ = BehaviorSubject<List<Album>>();
     _localSongs$ = BehaviorSubject<List<Song>>();
 
@@ -341,6 +351,7 @@ class MusicPlayerBloc {
     stopMusic();
     _isAudioSeeking$.close();
     _songs$.close();
+    _ringtone$.close();
     _albums$.close();
     _localSongs$.close();
     _playerState$.close();

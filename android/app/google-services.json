@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "982388286670-lgk8bt6bkk18kkdrpo67f5pjupn0evhv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vn.ringtone_app",
+            "certificate_hash": "1c6a88f6a4e7dcae61bd086c35eaeaf19f6fe4b3"
+          }
+        },
+        {
           "client_id": "982388286670-t5cdd2fnfmgnnnuiqv5tvkvi6c4ljm73.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
