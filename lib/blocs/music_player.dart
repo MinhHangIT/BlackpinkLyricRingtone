@@ -66,6 +66,7 @@ class MusicPlayerBloc {
       hashMySong[mySong.key] = mySong;
     });
     _songs$.add(songs);
+    print(_songs$.length);
   }
 
   Future<void> fetchRingtones() async {
@@ -79,24 +80,24 @@ class MusicPlayerBloc {
   }
 
   Future<void> fetchLocalSongs() async {
-    print("--------------------------------------");
-    await MusicFinder.allSongs().then(
-      (data) {
-        data = jsonDecode(data);
-        print("--------------------------------------");
-        print(data.length);
-        List<Song> songs = new List<Song>();
-        data.forEach((song) {
-          if (song.uri.contains(FOLDER_NAME)) {
-            song.isLocal = true;
-            song.key = getKeyFromUri(song.uri);
-            // print(jsonEncode(song.toJson()));
-            songs.add(song);
-          }
-        });
-        _localSongs$.add(songs);
-      },
-    );
+   // print("--------------------------------------");
+//    await MusicFinder.allSongs().then(
+//      (data) {
+//        data = jsonDecode(data);
+//       // print("--------------------------------------");
+//        print(data.length);
+//        List<Song> songs = new List<Song>();
+//        data.forEach((song) {
+//          if (song.uri.contains(FOLDER_NAME)) {
+//            song.isLocal = true;
+//            song.key = getKeyFromUri(song.uri);
+//            // print(jsonEncode(song.toJson()));
+//            songs.add(song);
+//          }
+//        });
+//        _localSongs$.add(songs);
+//      },
+//    );
   }
 
   Future<void> removeFromLocal(Song song) async {
@@ -108,6 +109,8 @@ class MusicPlayerBloc {
   }
 
   void playMusic(Song song) {
+    print("Song uri: " + song.uri +  " , Name: " + song.title);
+    _audioPlayer.pause();
     _audioPlayer.play(song.uri);
     updatePlayerState(PlayerState.playing, song);
   }

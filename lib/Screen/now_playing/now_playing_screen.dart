@@ -27,7 +27,7 @@ class NowPlayingScreen extends StatefulWidget {
 class _NowPlayingScreenState extends State<NowPlayingScreen> {
   String textDownload;
   bool isDownloading = false;
-  bool checkRingtone = true;
+
 
 //  InterstitialAd _interstitialAd;
 
@@ -191,7 +191,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: MusicBoardControls(isRingtone: checkRingtone),
+                  child: MusicBoardControls(),
                 ),
               ],
             ),

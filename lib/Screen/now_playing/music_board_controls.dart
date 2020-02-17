@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MusicBoardControls extends StatefulWidget {
-  bool isRingtone;
-  MusicBoardControls({this.isRingtone});
+  MusicBoardControls();
 
 
   MusicBoardControlsState createState() => MusicBoardControlsState();
@@ -46,8 +45,7 @@ class MusicBoardControlsState extends State<MusicBoardControls> {
                     padding: const EdgeInsets.only(left: 16.0),
                     child: GestureDetector(
                       onTap: () =>
-                      widget.isRingtone ?
-                          _globalBloc.musicPlayerBloc.playPreviousSong() : _globalBloc.musicPlayerSongBloc.playPreviousSong(),
+                          _globalBloc.musicPlayerBloc.playPreviousSong() ,
                       child: Icon(
                         Icons.fast_rewind,
                         color: Color(0xFFFD9D9D),
@@ -58,7 +56,7 @@ class MusicBoardControlsState extends State<MusicBoardControls> {
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
                     child: GestureDetector(
-                      onTap: () => widget.isRingtone ? _globalBloc.musicPlayerBloc.playNextSong() : _globalBloc.musicPlayerSongBloc.playNextSong(),
+                      onTap: () => _globalBloc.musicPlayerBloc.playNextSong() ,
                       child: Icon(
                         Icons.fast_forward,
                         color: Color(0xFFFD9D9D),
@@ -73,7 +71,7 @@ class MusicBoardControlsState extends State<MusicBoardControls> {
           Align(
             alignment: Alignment.center,
             child: StreamBuilder<MapEntry<PlayerState, Song>>(
-                stream: widget.isRingtone ? _globalBloc.musicPlayerBloc.playerState$ : _globalBloc.musicPlayerSongBloc.playerState$,
+                stream:  _globalBloc.musicPlayerBloc.playerState$ ,
                 builder: (BuildContext context,
                     AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                   if (!snapshot.hasData) {
@@ -87,13 +85,9 @@ class MusicBoardControlsState extends State<MusicBoardControls> {
                         return;
                       }
                       if (PlayerState.paused == _state) {
-                        widget.isRingtone ?
-                        _globalBloc.musicPlayerBloc.playMusic(_currentSong) :
-                        _globalBloc.musicPlayerSongBloc.playMusic(_currentSong);
+                        _globalBloc.musicPlayerBloc.playMusic(_currentSong);
                       } else {
-                        widget.isRingtone ?
-                        _globalBloc.musicPlayerBloc.pauseMusic(_currentSong) :
-                        _globalBloc.musicPlayerSongBloc.pauseMusic(_currentSong);
+                        _globalBloc.musicPlayerBloc.pauseMusic(_currentSong);
                       }
                     },
                     child: Container(

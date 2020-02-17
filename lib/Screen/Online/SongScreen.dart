@@ -108,7 +108,7 @@ class SongScreenState extends State<SongScreen>  {
                         padding: const EdgeInsets.only(bottom: 16.0, top: 60.0),
 
                         child:  StreamBuilder<List<Song>>(
-                          stream: _globalBloc.musicPlayerSongBloc.songs$,
+                          stream: _globalBloc.musicPlayerBloc.songs$,
                           builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
                             if (!snapshot.hasData) {
                               return Center(
@@ -129,43 +129,44 @@ class SongScreenState extends State<SongScreen>  {
                               itemExtent: 100,
                               itemBuilder: (BuildContext context, int index) {
                                 return StreamBuilder<MapEntry<PlayerState, Song>>(
-                                  stream: _globalBloc.musicPlayerSongBloc.playerState$,
+                                  stream: _globalBloc.musicPlayerBloc.playerState$,
                                   builder: (BuildContext context,
                                       AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
                                     if (!snapshot.hasData) {
                                       return Container();
                                     }
+
                                     final PlayerState _state = snapshot.data.key;
                                     final Song _currentSong = snapshot.data.value;
                                     final bool _isSelectedSong = _currentSong == _songs[index];
                                     return GestureDetector(
                                       onTap: () {
-                                        _globalBloc.musicPlayerSongBloc.updatePlaylist(_songs);
+                                        _globalBloc.musicPlayerBloc.updatePlaylist(_songs);
                                         switch (_state) {
                                           case PlayerState.playing:
                                             if (_isSelectedSong) {
-                                              _globalBloc.musicPlayerSongBloc
+                                              _globalBloc.musicPlayerBloc
                                                   .pauseMusic(_currentSong);
                                             } else {
-                                              _globalBloc.musicPlayerSongBloc.stopMusic();
-                                              _globalBloc.musicPlayerSongBloc.playMusic(
+                                              _globalBloc.musicPlayerBloc.stopMusic();
+                                              _globalBloc.musicPlayerBloc.playMusic(
                                                 _songs[index],
                                               );
                                             }
                                             break;
                                           case PlayerState.paused:
                                             if (_isSelectedSong) {
-                                              _globalBloc.musicPlayerSongBloc
+                                              _globalBloc.musicPlayerBloc
                                                   .playMusic(_songs[index]);
                                             } else {
-                                              _globalBloc.musicPlayerSongBloc.stopMusic();
-                                              _globalBloc.musicPlayerSongBloc.playMusic(
+                                              _globalBloc.musicPlayerBloc.stopMusic();
+                                              _globalBloc.musicPlayerBloc.playMusic(
                                                 _songs[index],
                                               );
                                             }
                                             break;
                                           case PlayerState.stopped:
-                                            _globalBloc.musicPlayerSongBloc.playMusic(_songs[index]);
+                                            _globalBloc.musicPlayerBloc.playMusic(_songs[index]);
                                             break;
                                           default:
                                             break;

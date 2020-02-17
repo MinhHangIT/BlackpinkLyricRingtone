@@ -47,6 +47,7 @@ class PlayBottomScreen extends StatelessWidget {
                             return;
                           }
                           if (PlayerState.paused == _state) {
+                            print(_currentSong.uri);
                             _globalBloc.musicPlayerBloc.playMusic(_currentSong);
                           } else {
                             _globalBloc.musicPlayerBloc

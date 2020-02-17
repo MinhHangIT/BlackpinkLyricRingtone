@@ -28,9 +28,9 @@ class _BlackPinkAppState extends State<BlackPinkApp> {
               _globalBloc.musicPlayerBloc.fetchLocalSongs().then(
                     (_) {
                       // get data song
-                      _globalBloc.musicPlayerSongBloc.fetchSongs().then(
+                      _globalBloc.musicPlayerBloc.fetchSongs().then(
                               (_){
-                            _globalBloc.musicPlayerSongBloc.retrieveFavorites();
+                            _globalBloc.musicPlayerBloc.retrieveFavorites();
                           });
                       // get data ringtone
                       _globalBloc.musicPlayerBloc.fetchRingtones().then(

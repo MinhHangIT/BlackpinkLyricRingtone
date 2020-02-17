@@ -199,7 +199,7 @@ class HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Provider<Ringtone>.value(
+                            builder: (context) => Provider<Song>.value(
                               //value: _songLyric[index],
                               child: RingtoneScreen(),
                             ),

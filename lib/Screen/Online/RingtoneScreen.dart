@@ -29,7 +29,7 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
   bool isRingtone = true;
   @override
   Widget build(BuildContext context) {
-    final Ringtone _song = Provider.of<Ringtone>(context);
+    final Song _song = Provider.of<Song>(context);
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     final double _screenHeight = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -135,6 +135,9 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
                                     if (!snapshot.hasData) {
                                       return Container();
                                     }
+
+                                    print("Current Ringtone: " + snapshot.data.value.title);
+
                                     final PlayerState _state = snapshot.data.key;
                                     final Song _currentSong = snapshot.data.value;
                                     final bool _isSelectedSong = _currentSong == _songs[index];
