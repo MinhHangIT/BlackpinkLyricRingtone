@@ -106,19 +106,19 @@ class PlayBottomScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () => _controller.open(),
-                          child: ShowIcon(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+//                    Flexible(
+//                      flex: 1,
+//                      child: Container(
+//                        width: double.infinity,
+//                        alignment: Alignment.centerRight,
+//                        child: GestureDetector(
+//                          onTap: () => _controller.open(),
+//                          child: ShowIcon(
+//                            color: Colors.white,
+//                          ),
+//                        ),
+//                      ),
+//                    ),
                   ],
                 ),
                 Row(

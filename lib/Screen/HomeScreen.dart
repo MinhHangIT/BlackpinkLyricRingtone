@@ -8,6 +8,7 @@ import 'package:ringtone_app/common/empty_screen.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:ringtone_app/model/Ringtone.dart';
 import 'package:ringtone_app/model/SongLyric.dart';
+import 'package:ringtone_app/store/AppStore.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:ringtone_app/model/playerstate.dart';
@@ -44,8 +45,13 @@ class HomeScreenState extends State<HomeScreen> {
     void initState() {
       _panelController = PanelController();
 
+      //setState(() {
+        store.isRingtone = false;
+        print("check ringtone"+store.isRingtone.toString());
+     // });
       super.initState();
     }
+
 
     @override
     void dispose() {
@@ -53,7 +59,14 @@ class HomeScreenState extends State<HomeScreen> {
       super.dispose();
     }
     return  Scaffold(
-      body: StreamBuilder<List<Song>>(
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bg.png"),
+                fit: BoxFit.cover,
+              )
+          ),
+          child: StreamBuilder<List<Song>>(
         stream: _globalBloc.musicPlayerBloc.localSongs$,
         builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
           if (!snapshot.hasData) {
@@ -131,7 +144,7 @@ class HomeScreenState extends State<HomeScreen> {
             },
           );
         },
-      ),
+      ),)
     );
 
   }
@@ -175,6 +188,9 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
+                      setState(() {
+                        store.isRingtone = false;
+                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -196,6 +212,9 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () {
+                      setState(() {
+                        store.isRingtone = true;
+                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(

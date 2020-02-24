@@ -16,6 +16,7 @@ class _BlackPinkAppState extends State<BlackPinkApp> {
   @override
   void initState() {
     super.initState();
+    //_globalBloc.musicPlayerBloc.getRingtoneSer();
   }
 
   @override
@@ -28,17 +29,17 @@ class _BlackPinkAppState extends State<BlackPinkApp> {
               _globalBloc.musicPlayerBloc.fetchLocalSongs().then(
                     (_) {
                       // get data song
-                      _globalBloc.musicPlayerBloc.fetchSongs().then(
-                              (_){
-                            _globalBloc.musicPlayerBloc.retrieveFavorites();
-                          });
-                      // get data ringtone
-                      _globalBloc.musicPlayerBloc.fetchRingtones().then(
-                              (_) {
-                            _globalBloc.musicPlayerBloc.retrieveFavorites();
-                          });
                     }
               );
+              _globalBloc.musicPlayerBloc.fetchSongs().then(
+                      (_){
+                    _globalBloc.musicPlayerBloc.retrieveFavorites();
+                  });
+              // get data ringtone
+              _globalBloc.musicPlayerBloc.fetchRingtones().then(
+                      (_) {
+                    _globalBloc.musicPlayerBloc.retrieveFavorites();
+                  });
             }
           },
         );

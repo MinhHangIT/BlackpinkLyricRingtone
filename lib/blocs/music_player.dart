@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/services.dart';
 import 'package:ringtone_app/model/Album.dart';
+import 'package:ringtone_app/model/AlbumLocal.dart';
+import 'package:ringtone_app/model/Ringtone.dart';
 import 'package:ringtone_app/model/playback.dart';
 import 'package:ringtone_app/model/playerstate.dart';
 import 'package:ringtone_app/model/SongLyric.dart';
@@ -11,13 +13,22 @@ import 'package:ringtone_app/utils/directory_modul.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+
 
 class MusicPlayerBloc {
+
+  FirebaseDatabase database;
+  DatabaseReference databaseReference;
+
   BehaviorSubject<List<Song>> _songs$;
   BehaviorSubject<List<Song>> _ringtone$;
   BehaviorSubject<List<Song>> _localSongs$;
   BehaviorSubject<List<SongLyric>> _songLyric$;
   BehaviorSubject<List<Album>> _albums$;
+  BehaviorSubject<List<AlbumLocal>> _albumsLocal$;
   BehaviorSubject<MapEntry<PlayerState, Song>> _playerState$;
   BehaviorSubject<MapEntry<List<Song>, List<Song>>>
       _playlist$; //key is normal, value is shuffle
@@ -37,6 +48,8 @@ class MusicPlayerBloc {
   BehaviorSubject<List<SongLyric>> get songLyric$ => _songLyric$;
 
   BehaviorSubject<List<Album>> get albums$ => _albums$;
+  BehaviorSubject<List<AlbumLocal>> get albumsLocal$ => _albumsLocal$;
+
 
   BehaviorSubject<MapEntry<PlayerState, Song>> get playerState$ =>
       _playerState$;
@@ -54,6 +67,30 @@ class MusicPlayerBloc {
     _initAudioPlayer();
   }
 
+  // get data from firebase
+//  Future<List<Ringtone>> getRingtoneSer() async {
+//    //print("Chij Hanhj Hanh Hanh Hanh HAnh");
+//    databaseReference = FirebaseDatabase.instance.reference();
+//    List<Ringtone> ringtone = new List<Ringtone>();
+//
+//    await databaseReference
+//        .child("ringtone")
+//        .once()
+//        .then((DataSnapshot snapshot) {
+//      print("Chij Hanhj Hanh Hanh Hanh HAnh");
+//      if (snapshot.value != null) {
+//        print("Chij Hanhj Hanh Hanh Hanh HAnh");
+//        Map<dynamic, dynamic> values = snapshot.value;
+//        values.forEach((key, values) {
+//          ringtone.add(Ringtone.fromJson(values));
+//
+//        });
+//      }
+//      print('Data ringtone : ${ringtone.length}');
+//    });
+//    return ringtone;
+//  }
+
   Future<void> fetchSongs() async {
     String jsonString = await rootBundle.loadString('lib/data/song.json');
     List<Song> mySongs = new List<Song>();
@@ -61,6 +98,7 @@ class MusicPlayerBloc {
     hashMySong = new Map<String, SongLyric>();
     List<Song> songs = new List<Song>();
     jsonResponse.forEach((o) {
+//      print(o.toString());
       SongLyric mySong = SongLyric.fromJson(o);
       Song song = Song.fromMap(o);
       //song.isLocal = false;
@@ -84,24 +122,30 @@ class MusicPlayerBloc {
   }
 
   Future<void> fetchLocalSongs() async {
-   // print("--------------------------------------");
-//    await MusicFinder.allSongs().then(
-//      (data) {
+    await MusicFinder.allSongs().then(
+      (data) {
 //        data = jsonDecode(data);
-//       // print("--------------------------------------");
-//        print(data.length);
-//        List<Song> songs = new List<Song>();
-//        data.forEach((song) {
+        print("--------------------------------------");
+        print("RingTone: " + data.toString());
+        List<Song> songs = new List<Song>();
+        data.forEach((song) {
+          print("SongType: " + song.toString());
+//          print("SOngData: " + song);
 //          if (song.uri.contains(FOLDER_NAME)) {
 //            song.isLocal = true;
 //            song.key = getKeyFromUri(song.uri);
 //            // print(jsonEncode(song.toJson()));
 //            songs.add(song);
 //          }
-//        });
-//        _localSongs$.add(songs);
-//      },
-//    );
+//          song.isLocal = true;
+//          song.key = getKeyFromUri(song.uri);
+          // print(jsonEncode(song.toJson()));
+//          print("SongType: " + song.);
+          songs.add(song);
+        });
+        _localSongs$.add(songs);
+      },
+    );
   }
 
   Future<void> removeFromLocal(Song song) async {
@@ -151,6 +195,17 @@ class MusicPlayerBloc {
     }
     final List<Album> _albums = _albumsMap.values.toList();
     _albums$.add(_albums);
+  }
+
+  void _updateAlbumsLocal(List<Song> songs) {
+    Map<int, AlbumLocal> _albumsMap = {};
+    for (Song song in songs) {
+      if (_albumsMap[song.albumId] == null) {
+        _albumsMap[song.albumId] = AlbumLocal.fromSong(song);
+      }
+    }
+    final List<AlbumLocal> _albums = _albumsMap.values.toList();
+    _albumsLocal$.add(_albums);
   }
 
   void playNextSong() {
@@ -309,6 +364,12 @@ class MusicPlayerBloc {
         _updateAlbums(songs);
       },
     ); // push albums from songs
+
+    _localSongs$.listen(
+          (List<Song> songs) {
+        _updateAlbumsLocal(songs);
+      },
+    );
   }
 
   void _initStreams() {
@@ -317,7 +378,7 @@ class MusicPlayerBloc {
     _ringtone$ = BehaviorSubject<List<Song>>();
     _albums$ = BehaviorSubject<List<Album>>();
     _localSongs$ = BehaviorSubject<List<Song>>();
-
+    _albumsLocal$ = BehaviorSubject<List<AlbumLocal>>();
     _position$ = BehaviorSubject<Duration>();
     _playlist$ = BehaviorSubject<MapEntry<List<Song>, List<Song>>>();
     _playback$ = BehaviorSubject<List<Playback>>.seeded([]);
@@ -353,6 +414,7 @@ class MusicPlayerBloc {
     _songs$.close();
     _ringtone$.close();
     _albums$.close();
+    _albumsLocal$.close();
     _localSongs$.close();
     _playerState$.close();
     _playlist$.close();

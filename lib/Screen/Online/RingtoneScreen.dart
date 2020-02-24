@@ -13,6 +13,7 @@ import 'package:ringtone_app/Screen/Offline/Ringtone_Title.dart';
 import 'package:provider/provider.dart';
 import 'package:ringtone_app/Screen/now_playing/empty_album_art.dart';
 import 'package:flutter/services.dart';
+import 'package:ringtone_app/store/AppStore.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
@@ -44,6 +45,10 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
       _panelController = PanelController();
 
       super.initState();
+      setState(() {
+        store.isRingtone = true;
+      });
+
     }
 
     @override

@@ -7,6 +7,7 @@ import 'package:ringtone_app/Screen/FavoriteScreen.dart';
 import 'package:ringtone_app/Screen/Album/AbumScreen.dart';
 import 'package:ringtone_app/Screen/MusicHome/PlayBottomScreen.dart';
 import 'package:ringtone_app/Screen/Search/search_screen.dart';
+import 'package:ringtone_app/store/AppStore.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ringtone_app/blocs/global.dart';
 import 'package:provider/provider.dart';
@@ -128,6 +129,7 @@ class MainScreenState extends State<MainScreen> {
                                   onTap: (){
                                     setState(() {
                                       isClick = !isClick;
+                                      store.isRingtone = false;
                                     });
                                   },
                                   child: Text("Offline",style: TextStyle(fontSize: 25,
@@ -199,7 +201,7 @@ class MainScreenState extends State<MainScreen> {
                               onPageChanged: onPageChanged,
                               children: <Widget>[
                                 HomeScreen(!isClick),
-                                AlbumsScreen(),
+                                AlbumsScreen(!isClick),
                                 FavoriteScreen(),
                                 ]),
                           )

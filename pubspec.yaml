@@ -31,12 +31,18 @@ dependencies:
   permission_handler: 2.1.2
   shared_preferences: ^0.5.3+1
   flutter_crashlytics: ^1.0.0
+  firebase_core: ^0.4.4
+  firebase_database: ^3.1.1
+  mobx: ^1.0.2
   dio:
   path_provider:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner:
+  mobx_codegen: ^1.0.2
 
 
 

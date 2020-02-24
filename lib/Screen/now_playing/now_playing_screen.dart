@@ -1,6 +1,7 @@
 //import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 import 'package:ringtone_app/blocs/global.dart';
 import 'package:ringtone_app/common/music_icons.dart';
 import 'package:ringtone_app/model/playerstate.dart';
@@ -9,6 +10,7 @@ import 'package:ringtone_app/Screen/now_playing/empty_album_art.dart';
 import 'package:ringtone_app/Screen/now_playing/music_board_controls.dart';
 import 'package:ringtone_app/Screen/now_playing/now_playing_slider.dart';
 import 'package:ringtone_app/Screen/now_playing/preferences_board.dart';
+import 'package:ringtone_app/store/AppStore.dart';
 import 'package:ringtone_app/utils/download_modul.dart';
 import 'package:ringtone_app/utils/permistion_modul.dart';
 import 'package:ringtone_app/utils/ringtone_modul.dart';
@@ -16,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class NowPlayingScreen extends StatefulWidget {
-  
+
   final PanelController controller;
   NowPlayingScreen({this.controller});
 
@@ -64,11 +66,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
             {
               bool setRingtone = await RingtoneModule.setRingtone(path, song.title);
               if (setRingtone) {
-//                _interstitialAd = AdmobAds.createInterstitialAd(() {
                   _showDialog("Set Ringtones", "Success");
-//                })
-//                  ..load()
-//                  ..show();
               } else {
                 _showDialog("Set Ringtones", "Failt");
               }
@@ -78,11 +76,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
             {
               bool setRingtone = await RingtoneModule.setNotification(path, song.title);
               if (setRingtone) {
-//                _interstitialAd = AdmobAds.createInterstitialAd(() {
                   _showDialog("Set Notification", "Success");
-//                })
-//                  ..load()
-//                  ..show();
               } else {
                 _showDialog("Set Notification", "Failt");
               }
@@ -92,11 +86,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
             {
               bool setRingtone = await RingtoneModule.setAlarm(path, song.title);
               if (setRingtone) {
-//                _interstitialAd = AdmobAds.createInterstitialAd(() {
                   _showDialog("Set Alarm", "Success");
-//                })
-//                  ..load()
-//                  ..show();
               } else {
                 _showDialog("Set Alarm", "Failt");
               }
@@ -104,11 +94,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
             }
           case RingtoneFunc.download:
             {
-//              _interstitialAd = AdmobAds.createInterstitialAd(() {
                 _showDialog("Download", "Save success on path ${path}");
-//              })
-//                ..load()
-//                ..show();
               break;
             }
         }
@@ -158,9 +144,9 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
-    final double _radius = 25.0;
+    final double _radius = 20.0;
     final double _screenHeight = MediaQuery.of(context).size.height;
-    final double _albumArtSize = _screenHeight / 2.1;
+    final double _albumArtSize = _screenHeight / 2;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -210,7 +196,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                   alignment: Alignment.bottomCenter,
                   color: Colors.transparent,
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
-                    GestureDetector(
+                    store.isRingtone  ? GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
                           _handleSetRingtone(RingtoneFunc.ringtone, snapshot.data.value);
@@ -230,8 +216,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         ),
                         child: Icon(Icons.ring_volume, color: Colors.white),
                       ),
-                    ),
-                    GestureDetector(
+                    ): Icon(Icons.ring_volume, color: Color(0xFFC7D2E3)) ,
+                    store.isRingtone ? GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
                           _handleSetRingtone(RingtoneFunc.notification, snapshot.data.value);
@@ -251,8 +237,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         ),
                         child: Icon(Icons.notifications, color: Colors.white),
                       ),
-                    ),
-                    GestureDetector(
+                    ): Icon(Icons.notifications, color: Color(0xFFC7D2E3)),
+                    store.isRingtone ? GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
                           _handleSetRingtone(RingtoneFunc.alarm, snapshot.data.value);
@@ -272,7 +258,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         ),
                         child: Icon(Icons.alarm, color: Colors.white),
                       ),
-                    ),
+                    ) :Icon(Icons.alarm, color: Color(0xFFC7D2E3)) ,
                     GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
@@ -358,15 +344,15 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                     ),
                   ),
                 ),
-                Flexible(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () => widget.controller.close(),
-                    child: HideIcon(
-                      color: Color(0xFF90A4D4),
-                    ),
-                  ),
-                )
+//                Flexible(
+//                  flex: 2,
+//                  child: GestureDetector(
+//                    onTap: () => widget.controller.close(),
+//                    child: HideIcon(
+//                      color: Color(0xFF90A4D4),
+//                    ),
+//                  ),
+//                )
               ],
             ),
           ),
