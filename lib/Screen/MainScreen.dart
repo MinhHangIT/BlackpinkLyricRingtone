@@ -111,7 +111,7 @@ class MainScreenState extends State<MainScreen> {
               body: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/images/bg.png"),
+                        image: AssetImage("assets/images/bg.jpg"),
                         fit: BoxFit.cover,
                       )
                   ),
@@ -130,6 +130,7 @@ class MainScreenState extends State<MainScreen> {
                                     setState(() {
                                       isClick = !isClick;
                                       store.isRingtone = false;
+                                      store.isLocal = true;
                                     });
                                   },
                                   child: Text("Offline",style: TextStyle(fontSize: 25,

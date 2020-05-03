@@ -42,7 +42,6 @@ class MusicPlayerBloc {
 
   BehaviorSubject<List<Song>> get songs$ => _songs$;
   BehaviorSubject<List<Song>> get ringtone$ => _ringtone$;
-
   BehaviorSubject<List<Song>> get localSongs$ => _localSongs$;
 
   BehaviorSubject<List<SongLyric>> get songLyric$ => _songLyric$;
@@ -101,8 +100,15 @@ class MusicPlayerBloc {
 //      print(o.toString());
       SongLyric mySong = SongLyric.fromJson(o);
       Song song = Song.fromMap(o);
-      //song.isLocal = false;
-      songs.add(song);
+      song.type = "songOnline";
+
+      int check = songs.where((ele)=> ele.title == song.title).toList().length;
+      if (check == 0)
+      {
+        songs.add(song);
+      }
+      songs.sort((a,b)=>a.title.compareTo(b.title));
+
       hashMySong[mySong.key] = mySong;
     });
     _songs$.add(songs);
@@ -114,9 +120,11 @@ class MusicPlayerBloc {
     final jsonResponse = json.decode(jsonString);
     List<Song> mySongs = new List<Song>();
     jsonResponse.forEach((o) {
-
-      mySongs.add(Song.fromMap(o));
-  });
+      Song song = Song.fromMap(o);
+      song.type = "ringtone";
+      mySongs.add(song);
+      mySongs.sort((a,b)=>a.title.compareTo(b.title));
+    });
 
     _ringtone$.add(mySongs);
   }
@@ -141,7 +149,11 @@ class MusicPlayerBloc {
 //          song.key = getKeyFromUri(song.uri);
           // print(jsonEncode(song.toJson()));
 //          print("SongType: " + song.);
-          songs.add(song);
+          Song songoff = song;
+          songoff.type = "songOff";
+          songs.add(songoff);
+          songs.sort((a,b)=>a.title.compareTo(b.title));
+
         });
         _localSongs$.add(songs);
       },
@@ -157,9 +169,10 @@ class MusicPlayerBloc {
   }
 
   void playMusic(Song song) {
-    print("Song uri: " + song.uri +  " , Name: " + song.title);
-    _audioPlayer.pause();
+    //print("Song uri: " + song.uri +  " , Name: " + song.title);
     _audioPlayer.play(song.uri);
+   //_audioPlayer.pause();
+
     updatePlayerState(PlayerState.playing, song);
   }
 

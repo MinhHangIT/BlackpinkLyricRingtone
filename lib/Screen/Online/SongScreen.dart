@@ -43,10 +43,7 @@ class SongScreenState extends State<SongScreen>  {
     @override
     void initState() {
       _panelController = PanelController();
-      setState(() {
-        store.isRingtone = false;
-        print("check ringtone"+store.isRingtone.toString());
-      });
+
       super.initState();
     }
 
@@ -103,7 +100,7 @@ class SongScreenState extends State<SongScreen>  {
 //                        decoration: BoxDecoration(
 //                          // color: Colors.red,
 //                            image: DecorationImage(
-//                              image: AssetImage("assets/images/bg.png"),
+//                              image: AssetImage("assets/images/bg.jpg"),
 //                              fit: BoxFit.cover,
 //
 //                            )

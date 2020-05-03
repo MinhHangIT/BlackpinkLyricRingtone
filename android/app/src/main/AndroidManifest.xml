@@ -18,6 +18,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:name="io.flutter.app.FlutterApplication"
         android:label="ringtone_app"
         android:icon="@mipmap/ic_launcher">

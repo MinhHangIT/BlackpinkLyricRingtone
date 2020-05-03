@@ -20,6 +20,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class NowPlayingScreen extends StatefulWidget {
 
   final PanelController controller;
+
   NowPlayingScreen({this.controller});
 
 
@@ -159,6 +160,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                 StreamBuilder<MapEntry<PlayerState, Song>>(
                   stream: _globalBloc.musicPlayerBloc.playerState$ ,
                   builder: (BuildContext context, AsyncSnapshot<MapEntry<PlayerState, Song>> snapshot) {
+
                     if (!snapshot.hasData || snapshot.data.value.albumArt == null) {
                       return EmptyAlbumArtContainer(
                         radius: _radius,
@@ -196,28 +198,30 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                   alignment: Alignment.bottomCenter,
                   color: Colors.transparent,
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
-                    store.isRingtone  ? GestureDetector(
-                      onTap: () {
-                        if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
-                          _handleSetRingtone(RingtoneFunc.ringtone, snapshot.data.value);
-                        }
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          gradient: LinearGradient(
-                            colors: <Color>[
-                              isDownloading ? Color(0xFFC7D2E3) : Color.fromRGBO(233, 96, 182, 1),
-                              isDownloading ? Color(0xFFC7D2E3) : Color.fromRGBO(151, 110, 246, 1),
-                            ],
+                    snapshot.data.value.type == "ringtone" ?
+                    GestureDetector(
+                          onTap: () {
+                            if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
+                              _handleSetRingtone(RingtoneFunc.ringtone, snapshot.data.value);
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  isDownloading ? Color(0xFFC7D2E3) : Color.fromRGBO(233, 96, 182, 1),
+                                  isDownloading ? Color(0xFFC7D2E3) : Color.fromRGBO(151, 110, 246, 1),
+                                ],
+                              ),
+                            ),
+                            child: Icon(Icons.ring_volume, color: Colors.white),
                           ),
-                        ),
-                        child: Icon(Icons.ring_volume, color: Colors.white),
-                      ),
-                    ): Icon(Icons.ring_volume, color: Color(0xFFC7D2E3)) ,
-                    store.isRingtone ? GestureDetector(
+                        ): Icon(Icons.ring_volume, color: Color(0xFFC7D2E3)) ,
+                    snapshot.data.value.type == "ringtone"  ?
+                    GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
                           _handleSetRingtone(RingtoneFunc.notification, snapshot.data.value);
@@ -238,7 +242,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         child: Icon(Icons.notifications, color: Colors.white),
                       ),
                     ): Icon(Icons.notifications, color: Color(0xFFC7D2E3)),
-                    store.isRingtone ? GestureDetector(
+                    snapshot.data.value.type == "ringtone" ?
+                    GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
                           _handleSetRingtone(RingtoneFunc.alarm, snapshot.data.value);
@@ -259,6 +264,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         child: Icon(Icons.alarm, color: Colors.white),
                       ),
                     ) :Icon(Icons.alarm, color: Color(0xFFC7D2E3)) ,
+                    snapshot.data.value.type == "songOnline" || snapshot.data.value.type == "ringtone" ?
                     GestureDetector(
                       onTap: () {
                         if (!isDownloading && snapshot.hasData && snapshot.data.value.uri != null) {
@@ -279,7 +285,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         ),
                         child: Icon(Icons.file_download, color: Colors.white),
                       ),
-                    ),
+                    ):Icon(Icons.file_download, color: Color(0xFFC7D2E3)),
                   ]),
                 );
               }),

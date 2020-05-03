@@ -41,7 +41,7 @@ class AlbumsScreenState extends State<AlbumsScreen> {
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
-                image: AssetImage("assets/images/bg.png"),
+                image: AssetImage("assets/images/bg.jpg"),
                 fit: BoxFit.cover,
 
               )
@@ -112,7 +112,7 @@ class AlbumsScreenState extends State<AlbumsScreen> {
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
-                image: AssetImage("assets/images/bg.png"),
+                image: AssetImage("assets/images/bg.jpg"),
                 fit: BoxFit.cover,
 
               )

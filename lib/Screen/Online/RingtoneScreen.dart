@@ -46,7 +46,7 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
 
       super.initState();
       setState(() {
-        store.isRingtone = true;
+       // store.isRingtone = true;
       });
 
     }
@@ -104,7 +104,7 @@ class RingtoneScreenState extends State<RingtoneScreen>  {
 //                        decoration: BoxDecoration(
 //                          // color: Colors.red,
 //                            image: DecorationImage(
-//                              image: AssetImage("assets/images/bg.png"),
+//                              image: AssetImage("assets/images/bg.jpg"),
 //                              fit: BoxFit.cover,
 //
 //                            )

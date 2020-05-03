@@ -26,7 +26,7 @@ class FavoriteScreenState extends State<FavoriteScreen> {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/bg.png"),
+              image: AssetImage("assets/images/bg.jpg"),
               fit: BoxFit.cover,
             )
         ),

@@ -46,8 +46,9 @@ class HomeScreenState extends State<HomeScreen> {
       _panelController = PanelController();
 
       //setState(() {
-        store.isRingtone = false;
-        print("check ringtone"+store.isRingtone.toString());
+//        store.isRingtone = false;
+//        store.isLocal = true;
+       // print("check ringtone"+store.isRingtone.toString());
      // });
       super.initState();
     }
@@ -62,7 +63,7 @@ class HomeScreenState extends State<HomeScreen> {
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/bg.png"),
+                image: AssetImage("assets/images/bg.jpg"),
                 fit: BoxFit.cover,
               )
           ),
@@ -164,7 +165,7 @@ class HomeScreenState extends State<HomeScreen> {
         height: height/1.1,
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/bg.png"),
+              image: AssetImage("assets/images/bg.jpg"),
               fit: BoxFit.cover,
             )
         ),
@@ -189,7 +190,8 @@ class HomeScreenState extends State<HomeScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        store.isRingtone = false;
+//                        store.isRingtone = false;
+//                        store.isLocal = false;
                       });
                       Navigator.push(
                           context,
@@ -213,7 +215,8 @@ class HomeScreenState extends State<HomeScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        store.isRingtone = true;
+//                        store.isRingtone = true;
+//                        store.isLocal= false;
                       });
                       Navigator.push(
                           context,
